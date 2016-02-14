@@ -134,7 +134,7 @@ class Cell extends React.Component {
   }
 }
 
-class ColonelBlotto extends Component {
+class BlottoGame extends React.Component {
 
   constructor (props: {}) {
     super(props);
@@ -158,7 +158,7 @@ class ColonelBlotto extends Component {
     var newBoard = this.state.board;
     var decremented = newBoard.decrementTile(row, col);
 
-    if (decremented) {
+    if (!decremented) {
       Sounds.click.play();
     }
 
@@ -204,9 +204,50 @@ class ColonelBlotto extends Component {
   }
 }
 
+class Welcome extends React.Component {
+  onPressStart () {
+    this.props.navigator.push({
+      name: 'BlottoGame',
+      component: BlottoGame
+    });
+  }
+
+  onPressHelp () {
+
+  }
+
+  render() {
+    return (
+      <View
+        style={styles.container}>
+
+        <Text style={styles.remainingMessage}>Colonel Blotto</Text>
+
+        <Button
+          style={styles.submitButton} textStyle={styles.submitButtonText}
+          onPress={() => {
+            this.onPressStart();
+          }}>
+          Start
+        </Button>
+
+        <Button
+          style={styles.submitButton} textStyle={styles.submitButtonText}
+          onPress={() => {
+            
+          }}>
+          Help
+        </Button>
+
+      </View>
+    )
+  }
+}
+
 module.exports = {
   tile: Tile,
   cell: Cell,
   board: Board,
-  blotto: ColonelBlotto
+  blotto: BlottoGame,
+  welcome: Welcome
 }
