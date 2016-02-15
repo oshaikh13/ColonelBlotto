@@ -14,7 +14,8 @@ import React, {
   Animated,
   Component,
   Text,
-  View
+  View,
+  Navigator
 } from 'react-native';
 
 import Button from 'apsl-react-native-button'
@@ -65,9 +66,8 @@ class Tile extends React.Component {
     var deltaY = event.nativeEvent.pageY - this.startY;
 
     var direction = -1;
-    if (Math.abs(deltaX) > 3 * Math.abs(deltaY) && Math.abs(deltaX) > 30) {
-      direction = deltaX > 0 ? 2 : 0;
-    } else if (Math.abs(deltaY) > 3 * Math.abs(deltaX) && Math.abs(deltaY) > 30) {
+
+    if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 10) {
       direction = deltaY > 0 ? 3 : 1;
     }
 
@@ -76,6 +76,8 @@ class Tile extends React.Component {
 
     if (direction === 1 || direction === 3) {
       direction === 1 ? this.props.increment(r, c) : this.props.decrement(r, c);
+    } else {
+      this.props.increment(r, c);
     }
 
   }
@@ -111,7 +113,7 @@ class Tile extends React.Component {
 
     var textStyles = [
       styles.value,
-      tileValue > 4 && styles.whiteText,
+      tileValue > 1 && styles.whiteText,
       tileValue > 100 && styles.threeDigits,
       tileValue > 1000 && styles.fourDigits,
     ];
@@ -194,7 +196,7 @@ class BlottoGame extends React.Component {
         <Button
           style={styles.submitButton} textStyle={styles.submitButtonText}
           onPress={() => {
-            console.log('Submit!')
+            this.props.navigator.pop();
           }}>
           Done
         </Button>
@@ -204,7 +206,7 @@ class BlottoGame extends React.Component {
   }
 }
 
-class Welcome extends React.Component {
+class Home extends React.Component {
   onPressStart () {
     this.props.navigator.push({
       name: 'BlottoGame',
@@ -244,10 +246,32 @@ class Welcome extends React.Component {
   }
 }
 
+class ColonelBlotto extends React.Component {
+
+  render() {
+    return (
+      <Navigator
+        initialRoute={{name: 'home', component: Home}}
+        configureScene={() => {
+            return Navigator.SceneConfigs.FloatFromRight;
+        }}
+        renderScene={(route, navigator) => {
+            // count the number of func calls
+
+          if (route.component) {
+            return React.createElement(route.component, { navigator });
+        }
+      }}/>
+    );
+  }
+
+}
+
 module.exports = {
   tile: Tile,
   cell: Cell,
   board: Board,
   blotto: BlottoGame,
-  welcome: Welcome
+  game: ColonelBlotto,
+  home: Home
 }

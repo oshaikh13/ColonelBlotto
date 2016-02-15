@@ -8,7 +8,7 @@ module.exports.BOARD_SIZE = 3;
 module.exports.styles = StyleSheet.create({
 
   submitButton: {
-    borderColor: '#ffbb87',
+    borderColor: '#000066',
     backgroundColor: 'white',
     borderRadius: 0,
     borderWidth: 3,
@@ -18,13 +18,13 @@ module.exports.styles = StyleSheet.create({
   },
 
   submitButtonText: {
-    color: '#ffbb87',
+    color: '#000066',
     fontFamily: 'Avenir',
     fontWeight: 'bold'
   },
 
   remainingMessage: {
-    color: '#ffbb87',
+    color: '#000066',
     fontWeight: '800',
     fontSize: 30,
     marginBottom: 20
@@ -36,7 +36,7 @@ module.exports.styles = StyleSheet.create({
   },
   board: {
     padding: module.exports.BOARD_PADDING,
-    backgroundColor: '#bbaaaa',
+    backgroundColor: '#000033',
     borderRadius: 5,
   },
   overlay: {
@@ -69,7 +69,7 @@ module.exports.styles = StyleSheet.create({
     width: module.exports.CELL_SIZE,
     height: module.exports.CELL_SIZE,
     borderRadius: 5,
-    backgroundColor: '#ddccbb',
+    backgroundColor: '#000066',
     margin: module.exports.CELL_MARGIN,
   },
   row: {
@@ -79,7 +79,7 @@ module.exports.styles = StyleSheet.create({
     position: 'absolute',
     width: module.exports.CELL_SIZE,
     height: module.exports.CELL_SIZE,
-    backgroundColor: '#ddccbb',
+    backgroundColor: '#000066',
     borderRadius: 5,
     flex: 1,
     justifyContent: 'center',
@@ -95,34 +95,34 @@ module.exports.styles = StyleSheet.create({
     backgroundColor: '#eeeeee',
   },
   tile2: {
-    backgroundColor: '#eeeecc',
+    backgroundColor: '#4d4dff',
   },
   tile3: {
-    backgroundColor: '#ffbb87',
+    backgroundColor: '#1a1aff',
   },
   tile4: {
-    backgroundColor: '#ff9966',
+    backgroundColor: '#003399',
   },
   tile5: {
-    backgroundColor: '#ff7755',
+    backgroundColor: '#004de6',
   },
   tile6: {
-    backgroundColor: '#ff5533',
+    backgroundColor: '#007a99',
   },
   tile7: {
-    backgroundColor: '#eecc77',
+    backgroundColor: '#005266',
   },
   tile8: {
-    backgroundColor: '#eecc66',
+    backgroundColor: '#2f2fb6',
   },
   tile9: {
-    backgroundColor: '#eecc55',
+    backgroundColor: '#25258e',
   },
   tile10: {
-    backgroundColor: '#eecc33',
+    backgroundColor: '#3434cb',
   },
   tile11: {
-    backgroundColor: '#eecc22',
+    backgroundColor: '#004d80',
   },
   whiteText: {
     color: '#ffffff',

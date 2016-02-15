@@ -6,33 +6,12 @@
 
 var components = require('./common/Components');
 
-var BlottoGame = components.BlottoGame;
+var ColonelBlotto = components.game;
 
 import React, {
-  AppRegistry,
-  Navigator
+  AppRegistry
 } from 'react-native';
 
-class ColonelBlotto extends React.Component {
 
-  render() {
-    return (
-      <Navigator
-        initialRoute={{name: 'welcome', component: components.welcome}}
-        configureScene={() => {
-            return Navigator.SceneConfigs.FloatFromRight;
-        }}
-        renderScene={(route, navigator) => {
-            // count the number of func calls
-          console.log(route, navigator); 
-
-          if (route.component) {
-            return React.createElement(route.component, { navigator });
-        }
-      }}/>
-    );
-  }
-
-}
 
 AppRegistry.registerComponent('ColonelBlotto', () => ColonelBlotto);
