@@ -1,6 +1,6 @@
 /**
  *  Colonel Blotto
- *  Lots of code taken from FB 2048 example. Thanks :)
+ *  Lots of love taken from FB 2048 example. Thanks :)
  */
 'use strict';
 
