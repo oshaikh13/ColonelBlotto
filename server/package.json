@@ -8,5 +8,9 @@
     "start": "node server.js"
   },
   "author": "Omar Shaikh <oshaikh13@gmail.com> (http://www.awesomeomar.com)",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.7.1",
+    "socket.io": "^1.4.5"
+  }
 }
