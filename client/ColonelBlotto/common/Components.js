@@ -140,9 +140,19 @@ class BlottoGame extends React.Component {
 
   constructor (props: {}) {
     super(props);
+
     this.state = {
-      board: BoardStructure(BOARD_SIZE, 10)
+      board: BoardStructure(BOARD_SIZE, 10, this.props.passedProps.rules)
     }
+    
+    this.state.alertText = "Rule Board";
+  }
+
+  componentDidMount() {
+    setTimeout(function (argument) {
+      var newBoard = BoardStructure(BOARD_SIZE, 10);
+      this.setState({board: newBoard, alertText: "Peices Remaining: " + newBoard.getPeicesLeft()});
+    }.bind(this), 5000);
   }
 
   incrementTile (row, col) {
@@ -153,7 +163,10 @@ class BlottoGame extends React.Component {
       Sounds.pop.play();
     }
 
-    this.setState({board: newBoard})
+    if (!this.state.board.isImmutable()) {
+      this.setState({board: newBoard, alertText: "Peices Remaining: " + newBoard.getPeicesLeft()});
+    }
+
   }
 
   decrementTile (row, col) {
@@ -164,7 +177,26 @@ class BlottoGame extends React.Component {
       Sounds.click.play();
     }
 
-    this.setState({board: newBoard});
+    if (!this.state.board.isImmutable()) {
+      this.setState({board: newBoard, alertText: "Peices Remaining: " + newBoard.getPeicesLeft()});
+    }
+
+  }
+
+  renderButton() {
+    if (this.state.board.isImmutable()) {
+      return ;
+    }
+    return (
+      <Button
+        style={styles.submitButton} 
+        textStyle={styles.submitButtonText}
+        onPress={() => {
+          this.props.navigator.pop();
+        }}>
+        Done
+      </Button>
+    );
   }
 
   render () {
@@ -181,25 +213,19 @@ class BlottoGame extends React.Component {
       }
     }
 
-    var left = this.state.board.getPeicesLeft();
 
     return (
       <View
         style={styles.container}>
 
-        <Text style={styles.remainingMessage}>Pieces Remaining: {left}</Text>
+        <Text style={styles.remainingMessage}>{this.state.alertText}</Text>
 
         <Board>
           {tiles}
         </Board>
 
-        <Button
-          style={styles.submitButton} textStyle={styles.submitButtonText}
-          onPress={() => {
-            this.props.navigator.pop();
-          }}>
-          Done
-        </Button>
+
+        {this.renderButton()}
 
       </View>
     );
@@ -209,8 +235,10 @@ class BlottoGame extends React.Component {
 class Home extends React.Component {
   onPressStart () {
     this.props.navigator.push({
-      name: 'BlottoGame',
-      component: BlottoGame
+      component: BlottoGame,
+      passProps: {rules: [[1, 1, 1], 
+                          [1, 1, 1], 
+                          [1, 1, 1]]}
     });
   }
 
@@ -259,7 +287,8 @@ class ColonelBlotto extends React.Component {
             // count the number of func calls
 
           if (route.component) {
-            return React.createElement(route.component, { navigator });
+            // I love react.
+            return <route.component passedProps={route.passProps} navigator={navigator} />
         }
       }}/>
     );
