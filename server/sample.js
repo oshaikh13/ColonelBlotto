@@ -1,9 +1,11 @@
 var utils = require('./algorithims/compareUtils');
 
 var rules = 
-[[2, 7, 2],
- [7, 10, 7],
- [2, 7, 2]];
+[
+  [2, 7, 2],
+  [7, 10, 7],
+  [2, 7, 2]
+];
 
 var board1 = 
 [

@@ -20,6 +20,18 @@ import React, {
 
 import Button from 'apsl-react-native-button'
 
+// A hack for socket.io to work on RN
+window.navigator.userAgent = "react-native";
+
+var io = require('socket.io-client/socket.io');
+
+// Testing
+var socket = io.connect('http://localhost:8000');
+socket.on('news', function (data) {
+  console.log(data);
+  socket.emit('my other event', { my: 'data' });
+});
+
 class Board extends React.Component {
   render() {
     // This must be edited manually for board size :(
