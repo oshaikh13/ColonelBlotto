@@ -6,13 +6,31 @@
 -- SET FOREIGN_KEY_CHECKS=0;
 
 -- ---
--- Table 'USER'
+-- Table 'games'
 -- 
 -- ---
 
-DROP TABLE IF EXISTS `USER`;
+DROP TABLE IF EXISTS `games`;
         
-CREATE TABLE `USER` (
+CREATE TABLE `games` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `user_1_id` INTEGER NULL DEFAULT NULL,
+  `user_2_id` INTEGER NULL DEFAULT NULL,
+  `rules_board` MEDIUMTEXT NULL DEFAULT NULL,
+  `user_1_board` INTEGER NULL DEFAULT NULL,
+  `user_2_board` INTEGER NULL DEFAULT NULL,
+  `winner` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'users'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `users`;
+        
+CREATE TABLE `users` (
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
   `username` MEDIUMTEXT NULL DEFAULT NULL,
   `password` MEDIUMTEXT NULL DEFAULT NULL,
@@ -21,38 +39,24 @@ CREATE TABLE `USER` (
 );
 
 -- ---
--- Table 'GAME'
--- 
--- ---
-
-DROP TABLE IF EXISTS `GAME`;
-        
-CREATE TABLE `GAME` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `USER_1_ID` INTEGER NULL DEFAULT NULL,
-  `USER_2_ID` INTEGER NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
 -- Foreign Keys 
 -- ---
 
-ALTER TABLE `GAME` ADD FOREIGN KEY (USER_1_ID) REFERENCES `USER` (`id`);
-ALTER TABLE `GAME` ADD FOREIGN KEY (USER_2_ID) REFERENCES `USER` (`id`);
+ALTER TABLE `games` ADD FOREIGN KEY (user_1_id) REFERENCES `users` (`id`);
+ALTER TABLE `games` ADD FOREIGN KEY (user_2_id) REFERENCES `users` (`id`);
 
 -- ---
 -- Table Properties
 -- ---
 
--- ALTER TABLE `USER` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `GAME` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `games` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `users` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ---
 -- Test Data
 -- ---
 
--- INSERT INTO `USER` (`id`,`username`,`password`,`rank`) VALUES
+-- INSERT INTO `games` (`id`,`user_1_id`,`user_2_id`,`rules_board`,`user_1_board`,`user_2_board`,`winner`) VALUES
+-- ('','','','','','','');
+-- INSERT INTO `users` (`id`,`username`,`password`,`rank`) VALUES
 -- ('','','','');
--- INSERT INTO `GAME` (`id`,`USER_1_ID`,`USER_2_ID`) VALUES
--- ('','','');
