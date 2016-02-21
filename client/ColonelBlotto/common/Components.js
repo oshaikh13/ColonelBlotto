@@ -10,9 +10,36 @@ var CELL_SIZE = StyleData.CELL_SIZE;
 var BOARD_SIZE = StyleData.BOARD_SIZE;
 var CELL_MARGIN = StyleData.CELL_MARGIN;
 
+var t = require('tcomb-form-native');
+
+var Form = t.form.Form;
+
+// here we are: define your domain model
+var Person = t.struct({
+  username: t.String,              // a required string 
+  password: t.String,              // a required number
+  existingUser: t.Boolean          // a boolean
+});
+
+// Local file storage. Use it as a "db"
+var db = {};
+
+db.getUserData = function(cb) {
+  AsyncStorage.getItem("userdata", function(err, result){
+    cb(err, result);
+  })
+}
+
+db.writeUserData = function(data, cb) {
+  AsyncStorage.setItem("userdata", JSON.stringify(data), function(err, result){
+    cb(err, result);
+  })
+}
+
 import React, {
   Animated,
   Component,
+  AsyncStorage,
   Text,
   View,
   Navigator
@@ -25,12 +52,8 @@ window.navigator.userAgent = "react-native";
 
 var io = require('socket.io-client/socket.io');
 
-// Testing
 var socket = io.connect('http://localhost:8000');
-socket.on('news', function (data) {
-  console.log(data);
-  socket.emit('my other event', { my: 'data' });
-});
+
 
 class Board extends React.Component {
   render() {
@@ -204,7 +227,7 @@ class BlottoGame extends React.Component {
         style={styles.submitButton} 
         textStyle={styles.submitButtonText}
         onPress={() => {
-          this.props.navigator.pop();
+          this.props.navigator.popToTop();
         }}>
         Done
       </Button>
@@ -244,14 +267,77 @@ class BlottoGame extends React.Component {
   }
 }
 
+class Login extends React.Component {
+  constructor (props: {}) {
+    super(props);
+  }
+
+  render () {
+    return (
+      <View />
+    )
+  }
+
+
+}
+
 class Home extends React.Component {
+
+  constructor (props: {}) {
+    super(props);
+
+    this.state = {
+      loading: true
+    }
+
+    var that = this;
+
+    var nextView = function() {
+      that.props.navigator.push({
+        component: Login
+      });
+    }
+
+    db.getUserData(function(err, res){
+      if (!res) {
+        nextView();
+      }
+    })
+
+  }
+
+  componentDidMount () {
+    socket.on('ready', this.handleGameReady.bind(this))
+  }
+
+  componentWillUnmount () {
+    socket.removeListener('ready', this.handleGameReady);
+  }
+
+  handleGameReady (data) {
+    var that = this;
+    that.setState({loading: false});
+
+    var nextView = function() {
+      that.props.navigator.push({
+        component: BlottoGame,
+        passProps: {rules: [[1, 1, 1], 
+                            [1, 1, 1], 
+                            [1, 1, 1]]}
+      });
+    }
+
+    console.log("RULES FROM SERVER");
+    console.log(data.rules);
+    nextView();
+
+  }
+
   onPressStart () {
-    this.props.navigator.push({
-      component: BlottoGame,
-      passProps: {rules: [[1, 1, 1], 
-                          [1, 1, 1], 
-                          [1, 1, 1]]}
-    });
+    this.setState({loading: true});
+
+    socket.emit('startGame');
+
   }
 
   onPressHelp () {
@@ -266,6 +352,7 @@ class Home extends React.Component {
         <Text style={styles.remainingMessage}>Colonel Blotto</Text>
 
         <Button
+          isLoading={this.state.loading}
           style={styles.submitButton} textStyle={styles.submitButtonText}
           onPress={() => {
             this.onPressStart();

@@ -1,0 +1,58 @@
+-- ---
+-- Globals
+-- ---
+
+-- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- SET FOREIGN_KEY_CHECKS=0;
+
+-- ---
+-- Table 'USER'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `USER`;
+        
+CREATE TABLE `USER` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `username` MEDIUMTEXT NULL DEFAULT NULL,
+  `password` MEDIUMTEXT NULL DEFAULT NULL,
+  `rank` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'GAME'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `GAME`;
+        
+CREATE TABLE `GAME` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `USER_1_ID` INTEGER NULL DEFAULT NULL,
+  `USER_2_ID` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Foreign Keys 
+-- ---
+
+ALTER TABLE `GAME` ADD FOREIGN KEY (USER_1_ID) REFERENCES `USER` (`id`);
+ALTER TABLE `GAME` ADD FOREIGN KEY (USER_2_ID) REFERENCES `USER` (`id`);
+
+-- ---
+-- Table Properties
+-- ---
+
+-- ALTER TABLE `USER` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `GAME` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ---
+-- Test Data
+-- ---
+
+-- INSERT INTO `USER` (`id`,`username`,`password`,`rank`) VALUES
+-- ('','','','');
+-- INSERT INTO `GAME` (`id`,`USER_1_ID`,`USER_2_ID`) VALUES
+-- ('','','');
