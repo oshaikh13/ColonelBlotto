@@ -7,12 +7,22 @@ module.exports.BOARD_SIZE = 3;
 
 module.exports.styles = StyleSheet.create({
 
+  formContainer: {
+    justifyContent: 'center',
+    marginTop: 50,
+    padding: 20,
+    backgroundColor: '#ffffff',
+  },
+
   submitButton: {
     borderColor: '#000066',
     backgroundColor: 'white',
     borderRadius: 0,
     borderWidth: 3,
-    marginTop: 20,
+    marginTop: 20
+  },
+
+  submitButtonMargin: {
     marginLeft: 20,
     marginRight: 20
   },

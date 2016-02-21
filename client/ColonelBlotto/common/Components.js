@@ -21,6 +21,19 @@ var Person = t.struct({
   existingUser: t.Boolean          // a boolean
 });
 
+var renderOptions = {
+  fields: {
+    password: {
+      password: true
+    }
+  }
+};
+
+var buttonStyles = [
+  styles.submitButton,
+  styles.submitButtonMargin
+]
+
 // Local file storage. Use it as a "db"
 var db = {};
 
@@ -224,7 +237,7 @@ class BlottoGame extends React.Component {
     }
     return (
       <Button
-        style={styles.submitButton} 
+        style={buttonStyles} 
         textStyle={styles.submitButtonText}
         onPress={() => {
           this.props.navigator.popToTop();
@@ -274,7 +287,22 @@ class Login extends React.Component {
 
   render () {
     return (
-      <View />
+      <View style={styles.formContainer}>
+        {/* display */}
+        <Form
+          ref="form"
+          type={Person}
+          options={renderOptions}/
+        >
+
+        <Button
+          style={styles.submitButton} textStyle={styles.submitButtonText}
+          onPress={() => {
+            
+          }}>
+          Done
+        </Button>
+      </View>
     )
   }
 
@@ -353,7 +381,7 @@ class Home extends React.Component {
 
         <Button
           isLoading={this.state.loading}
-          style={styles.submitButton} textStyle={styles.submitButtonText}
+          style={buttonStyles} textStyle={styles.submitButtonText}
           onPress={() => {
             this.onPressStart();
           }}>
@@ -361,7 +389,7 @@ class Home extends React.Component {
         </Button>
 
         <Button
-          style={styles.submitButton} textStyle={styles.submitButtonText}
+          style={buttonStyles} textStyle={styles.submitButtonText}
           onPress={() => {
             
           }}>
