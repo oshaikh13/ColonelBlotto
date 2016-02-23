@@ -17,8 +17,33 @@ module.exports = {
 
   },
 
-  userExists: function(data, cb) {
-    con.query("SELECT * FROM users WHERE username = ? LIMIT 1", data.username, function(err, res) {
+  comparePassowrd: function(canidatePass, databasePass, cb) {
+    console.log("CALLING COMPARE");
+    console.log(canidatePass, databasePass);
+    bcrypt.compare(canidatePass, databasePass, function (err, isMatch) {
+      if (err) {
+        console.error(isMatch);
+        cb(false); // TODO: Better err handling.
+      } else {
+        cb(isMatch);
+      }
+    });
+  },
+
+  signIn: function(data, cb) {
+    this.getUser(data.username, function(err, res){
+      if (res.length) {
+        this.comparePassowrd(data.password, res[0].password, function(match) {
+          cb(match);
+        }); 
+      } else {
+        cb(false);
+      }
+    }.bind(this));
+  },
+
+  getUser: function(username, cb) {
+    con.query("SELECT * FROM users WHERE username = ? LIMIT 1", username, function(err, res) {
       cb(err, res)
     })
   },
@@ -28,13 +53,13 @@ module.exports = {
     // generate a salt
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
       if (err) {
-        return next(err);
+        console.error(err);
       }
 
       // hash the password along with our new salt
       bcrypt.hash(data.password, salt, null, function(err, hash) {
         if (err) {
-          return next(err);
+          console.error(err);
         }
 
         // Generate a unique URL.
@@ -50,20 +75,19 @@ module.exports = {
     });
   },
 
-  createUser: function (data, cb) {
+  login: function (data, cb) {
     if (this.valid(data))  {  
-      this.userExists(data, function(err, res){
+      this.getUser(data.username, function(err, res){
         if (!res.length) {
           this.insertUser(data, function(err, res){
-
+            cb(err, res)
           })
         } else {
-          console.log("ERR: USER EXISTS");
+          cb({err: "Username exists."}, null);
         }
-      });  
+      }.bind(this));  
     }
   }
 
 }
-
 
