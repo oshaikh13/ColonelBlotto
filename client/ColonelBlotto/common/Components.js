@@ -1,3 +1,15 @@
+
+import React, {
+  Animated,
+  Component,
+  AsyncStorage,
+  Text,
+  View,
+  Navigator
+} from 'react-native';
+
+import Button from 'apsl-react-native-button'
+
 var StyleData = require('./Stylesheets');
 var BoardStructure = require('./Board');
 var Sounds = require('./Sounds');
@@ -32,7 +44,7 @@ var renderOptions = {
 var buttonStyles = [
   styles.submitButton,
   styles.submitButtonMargin
-]
+];
 
 // Local file storage. Use it as a "db"
 var db = {};
@@ -40,25 +52,15 @@ var db = {};
 db.getUserData = function(cb) {
   AsyncStorage.getItem("userdata", function(err, result){
     cb(err, result);
-  })
-}
+  });
+};
 
 db.writeUserData = function(data, cb) {
   AsyncStorage.setItem("userdata", JSON.stringify(data), function(err, result){
     cb(err, result);
-  })
-}
+  });
+};
 
-import React, {
-  Animated,
-  Component,
-  AsyncStorage,
-  Text,
-  View,
-  Navigator
-} from 'react-native';
-
-import Button from 'apsl-react-native-button'
 
 // A hack for socket.io to work on RN
 window.navigator.userAgent = "react-native";
